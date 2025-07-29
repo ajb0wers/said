@@ -1,9 +1,12 @@
-said
-=====
+# said
 
-An OTP application
+Erlang Public Access.
 
-Build
------
+## Build
 
-    $ rebar3 compile
+```Bash
+rebar3 compile
+rebar3 release
+./_build/default/rel/said/bin/said foreground
+xdg-open http://localhost:8080
+```
