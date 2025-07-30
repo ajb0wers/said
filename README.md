@@ -1,6 +1,6 @@
 # Said
 
-Erlang websocket based chat program.
+HTMX & Websocket chat program in Erlang.
 
 ## Build
 
@@ -15,15 +15,11 @@ rebar3 release
 # Start as a program in foreground
 ./_build/default/rel/said/bin/said foreground
 
-# Open the web page
-xdg-open http://localhost:8080
-```
-
-## Podman
-
-```Bash
-# Dockerfile using podman or docker
+# e.g. Build & run container using podman or docker
 podman build --tag ajb0wers/said .
 podman run -p 8080:8080 --rm ajb0wers/said
+
+# Open web page to chat
+xdg-open http://localhost:8080
 ```
 
