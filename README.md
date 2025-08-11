@@ -1,6 +1,6 @@
 # Said
 
-HTMX & Websocket chat program in Erlang.
+Web chat program in Erlang.
 
 ## Build
 
