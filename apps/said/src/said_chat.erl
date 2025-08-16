@@ -8,7 +8,7 @@
 	websocket_info/2,
 	terminate/3
 ]).
-
+-export([escape/1]).
 
 init(Req, State) ->
   {cowboy_websocket, Req, State, #{
@@ -39,29 +39,39 @@ terminate(Reason, _PartialReq, _State) ->
   said_srv:leave().
 
 
-%% chat({ok, #{<<"message">> := Msg}}) ->  chat(text, Msg).
-
 chat(text, Msg) -> 
   You = list_to_binary(io_lib:format("~w", [self()])),
-	{text, <<
-    """
+  Text = escape(Msg),
+	{text, <<"""
     <div id="chat" hx-swap-oob="beforeend">
     <p><strong>
-    """, You/binary, "</strong> ", Msg/binary,
+    """, You/binary, "</strong> ", Text/binary,
     "</p></div>" >>}.
 
 chat(text, From, Msg) -> 
   Other = list_to_binary(io_lib:format("~w", [From])),
-	{text, <<
-    """
+  Text = escape(Msg),
+	{text, <<"""
     <div id="chat" hx-swap-oob="beforeend">
     <p>
-    """, Other/binary, " ", Msg/binary,
+    """, Other/binary, " ", Text/binary,
     "</p></div>" >>}.
 
 toast(text, Msg) -> 
-	{text, <<
-    """
+  Text = escape(Msg),
+	{text, <<"""
     <div id="notifications">
-    """, Msg/binary, "</div>">>}.
+    """, Text/binary, "</div>">>}.
 
+escape(Msg) when is_binary(Msg) ->
+  Chars = [
+    {"&",  "&amp;"},
+    {"<",  "&gt;"},
+    {">",  "&lt;"},
+    {"'",  "&#x27;"},
+    {"\"", "&quot;"}
+  ],
+  Fun = fun({Char, Esc}, String) ->
+    string:replace(String, Char, Esc, all)
+  end,
+  iolist_to_binary(lists:foldl(Fun, Msg, Chars)).
