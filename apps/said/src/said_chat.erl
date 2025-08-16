@@ -19,7 +19,7 @@ websocket_init(State) ->
 	{[chat(text, <<"Hello!">>)], State}.
 
 websocket_handle({text, Msg0}, State) ->
-  {ok, #{<<"message">> := Msg}} = thoas:decode(Msg0),
+  #{<<"message">> := Msg} = json:decode(Msg0),
   said_srv:chat(Msg),
 	{[chat(text, Msg)], State};
 websocket_handle(_Data, State) ->
