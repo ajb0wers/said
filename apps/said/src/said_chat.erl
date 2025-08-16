@@ -41,27 +41,22 @@ terminate(Reason, _PartialReq, _State) ->
 
 chat(text, Msg) -> 
   You = list_to_binary(io_lib:format("~w", [self()])),
-  Text = iolist_to_binary(escape(Msg)),
-	[{text, <<"""
-    <div id="chat" hx-swap-oob="beforeend">
-    <p><strong>
-    """, You/binary, "</strong> ", Text/binary,
-    "</p></div>" >>}].
+	[{text, [<<"""
+    <div id="chat" hx-swap-oob="beforeend"><p><strong>
+    """, You/binary, "</strong> ">>,
+    escape(Msg), ~"</p></div>"]}].
 
 chat(text, From, Msg) -> 
   Other = list_to_binary(io_lib:format("~w", [From])),
-  Text = iolist_to_binary(escape(Msg)),
-	[{text, <<"""
-    <div id="chat" hx-swap-oob="beforeend">
-    <p>
-    """, Other/binary, " ", Text/binary,
-    "</p></div>" >>}].
+	[{text, [<<"""
+    <div id="chat" hx-swap-oob="beforeend"><p>
+    """, Other/binary, " ">>,
+    escape(Msg), ~"</p></div>"]}].
 
 toast(text, Msg) -> 
-  Text = iolist_to_binary(escape(Msg)),
-	[{text, <<"""
+	[{text, [<<"""
     <div id="notifications">
-    """, Text/binary, "</div>">>}].
+    """>>, escape(Msg), ~"</div>"]}].
 
 escape(Msg) when is_binary(Msg) ->
   Chars = [

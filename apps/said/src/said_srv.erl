@@ -38,8 +38,7 @@ handle_cast({leave, From} = Msg, #state{clients=Clients} = State) ->
   ?LOG_INFO(#{what => Msg}),
   NewState = State#state{clients=lists:delete(From, Clients)},
 	{noreply, NewState};
-handle_cast({chat, From, Text} = Msg, #state{clients=Clients} = State) ->
-  ?LOG_INFO(#{what => Msg}),
+handle_cast({chat, From, Text}, #state{clients=Clients} = State) ->
   ok = notify(From, Text, Clients),
 	{noreply, State};
 handle_cast(Msg, State) -> 
