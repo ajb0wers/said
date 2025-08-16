@@ -15,11 +15,14 @@ rebar3 release
 # Start as a program in foreground
 ./_build/default/rel/said/bin/said foreground
 
+# Open web page to chat
+xdg-open http://localhost:8080
+
 # Build & run container using podman, docker, colima etc.
 podman build --tag ajb0wers/said .
 podman run -p 8080:8080 --rm --name said ajb0wers/said
 
-# Open web page to chat
-xdg-open http://localhost:8080
+# Stopping the named container
+podman stop said
 ```
 
