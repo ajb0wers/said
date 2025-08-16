@@ -11,7 +11,8 @@
 
 
 init(Req, State) ->
-  {cowboy_websocket, Req, State}.
+  {cowboy_websocket, Req, State, #{
+     idle_timeout => 900000}}.
 
 websocket_init(State) ->
   said_srv:enter(),
@@ -43,17 +44,24 @@ terminate(Reason, _PartialReq, _State) ->
 chat(text, Msg) -> 
   You = list_to_binary(io_lib:format("~w", [self()])),
 	{text, <<
-    "<div id=\"chat\" hx-swap-oob=\"beforeend\">"
-		"<p><strong>", You/binary, "</strong> ", Msg/binary,
+    """
+    <div id="chat" hx-swap-oob="beforeend">
+    <p><strong>
+    """, You/binary, "</strong> ", Msg/binary,
     "</p></div>" >>}.
 
 chat(text, From, Msg) -> 
   Other = list_to_binary(io_lib:format("~w", [From])),
 	{text, <<
-    "<div id=\"chat\" hx-swap-oob=\"beforeend\">"
-		"<p>", Other/binary, " ", Msg/binary,
+    """
+    <div id="chat" hx-swap-oob="beforeend">
+    <p>
+    """, Other/binary, " ", Msg/binary,
     "</p></div>" >>}.
 
 toast(text, Msg) -> 
-	{text, <<"<div id=\"notifications\">", Msg/binary, "</div>">>}.
+	{text, <<
+    """
+    <div id="notifications">
+    """, Msg/binary, "</div>">>}.
 
