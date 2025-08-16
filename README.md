@@ -17,7 +17,7 @@ rebar3 release
 
 # e.g. Build & run container using podman or docker
 podman build --tag ajb0wers/said .
-podman run -p 8080:8080 --rm ajb0wers/said
+podman run -p 8080:8080 --rm --name said ajb0wers/said
 
 # Open web page to chat
 xdg-open http://localhost:8080

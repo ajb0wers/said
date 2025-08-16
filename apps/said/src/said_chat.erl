@@ -16,21 +16,21 @@ init(Req, State) ->
 
 websocket_init(State) ->
   said_srv:enter(),
-	{[chat(text, <<"Hello!">>)], State}.
+	{chat(text, <<"Hello!">>), State}.
 
 websocket_handle({text, Msg0}, State) ->
   #{<<"message">> := Msg} = json:decode(Msg0),
   said_srv:chat(Msg),
-	{[chat(text, Msg)], State};
+	{chat(text, Msg), State};
 websocket_handle(_Data, State) ->
 	{[], State}.
 
 websocket_info({timeout, _Ref, Msg}, State) ->
-	{[toast(text, Msg)], State};
+	{toast(text, Msg), State};
 websocket_info({text, Msg}, State) ->
-	{[chat(text, Msg)], State};
+	{chat(text, Msg), State};
 websocket_info({text, From, Msg}, State) ->
-	{[chat(text, From, Msg)], State};
+	{chat(text, From, Msg), State};
 websocket_info(_Info, State) ->
 	{[], State}.
 
@@ -41,27 +41,27 @@ terminate(Reason, _PartialReq, _State) ->
 
 chat(text, Msg) -> 
   You = list_to_binary(io_lib:format("~w", [self()])),
-  Text = escape(Msg),
-	{text, <<"""
+  Text = iolist_to_binary(escape(Msg)),
+	[{text, <<"""
     <div id="chat" hx-swap-oob="beforeend">
     <p><strong>
     """, You/binary, "</strong> ", Text/binary,
-    "</p></div>" >>}.
+    "</p></div>" >>}].
 
 chat(text, From, Msg) -> 
   Other = list_to_binary(io_lib:format("~w", [From])),
-  Text = escape(Msg),
-	{text, <<"""
+  Text = iolist_to_binary(escape(Msg)),
+	[{text, <<"""
     <div id="chat" hx-swap-oob="beforeend">
     <p>
     """, Other/binary, " ", Text/binary,
-    "</p></div>" >>}.
+    "</p></div>" >>}].
 
 toast(text, Msg) -> 
-  Text = escape(Msg),
-	{text, <<"""
+  Text = iolist_to_binary(escape(Msg)),
+	[{text, <<"""
     <div id="notifications">
-    """, Text/binary, "</div>">>}.
+    """, Text/binary, "</div>">>}].
 
 escape(Msg) when is_binary(Msg) ->
   Chars = [
@@ -74,4 +74,4 @@ escape(Msg) when is_binary(Msg) ->
   Fun = fun({Char, Esc}, String) ->
     string:replace(String, Char, Esc, all)
   end,
-  iolist_to_binary(lists:foldl(Fun, Msg, Chars)).
+  lists:foldl(Fun, Msg, Chars).
