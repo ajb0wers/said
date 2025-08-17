@@ -25,24 +25,20 @@ chat(Msg) ->
 init(_Args) ->
   {ok, #state{}}.
 
-handle_call(Msg, _From, State) ->
-  ?LOG_INFO(#{what => Msg}),
+handle_call(_Msg, _From, State) ->
 	{noreply, State}.
 
-handle_cast({enter, From} = Msg, #state{clients=Clients} = State) ->
-  ?LOG_INFO(#{what => Msg, state => State}),
+handle_cast({enter, From}, #state{clients=Clients} = State) ->
 	NewState = State#state{clients=[From|Clients]},
   ?LOG_INFO(#{clients => NewState}),
 	{noreply, NewState};
-handle_cast({leave, From} = Msg, #state{clients=Clients} = State) ->
-  ?LOG_INFO(#{what => Msg}),
+handle_cast({leave, From}, #state{clients=Clients} = State) ->
   NewState = State#state{clients=lists:delete(From, Clients)},
 	{noreply, NewState};
 handle_cast({chat, From, Text}, #state{clients=Clients} = State) ->
   ok = notify(From, Text, Clients),
 	{noreply, State};
-handle_cast(Msg, State) -> 
-  ?LOG_INFO(#{wtf => Msg}),
+handle_cast(_, State) -> 
 	{noreply, State}.
 
 handle_info(_Msg, State) ->
@@ -52,7 +48,6 @@ handle_continue(_Msg, State) ->
   {noreply, State}.
 
 terminate(_Reason, _State) -> ok.
-
 
 notify(_From, _Text, []) ->
   ok;

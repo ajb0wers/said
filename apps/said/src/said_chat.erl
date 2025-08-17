@@ -20,7 +20,7 @@ websocket_init(State) ->
 
 websocket_handle({text, Msg0}, State) ->
   #{<<"message">> := Msg} = json:decode(Msg0),
-  said_srv:chat(Msg),
+  said_srv:chat(escape(Msg)),
 	{chat(text, Msg), State};
 websocket_handle(_Data, State) ->
 	{[], State}.
@@ -40,33 +40,32 @@ terminate(Reason, _PartialReq, _State) ->
 
 
 chat(text, Msg) -> 
-  You = list_to_binary(io_lib:format("~w", [self()])),
 	[{text, [<<"""
     <div id="chat" hx-swap-oob="beforeend"><p><strong>
-    """, You/binary, "</strong> ">>,
-    escape(Msg), ~"</p></div>"]}].
+    """>>, you(), ~"</strong> ", Msg, ~"</p></div>"]}].
 
 chat(text, From, Msg) -> 
-  Other = list_to_binary(io_lib:format("~w", [From])),
 	[{text, [<<"""
     <div id="chat" hx-swap-oob="beforeend"><p>
-    """, Other/binary, " ">>,
-    escape(Msg), ~"</p></div>"]}].
+    """>>, other(From), ~" ", Msg, ~"</p></div>"]}].
 
 toast(text, Msg) -> 
 	[{text, [<<"""
     <div id="notifications">
-    """>>, escape(Msg), ~"</div>"]}].
+    """>>, Msg, ~"</div>"]}].
 
-escape(Msg) when is_binary(Msg) ->
-  Chars = [
-    {"&",  "&amp;"},
-    {"<",  "&gt;"},
-    {">",  "&lt;"},
-    {"'",  "&#x27;"},
-    {"\"", "&quot;"}
-  ],
-  Fun = fun({Char, Esc}, String) ->
-    string:replace(String, Char, Esc, all)
-  end,
-  lists:foldl(Fun, Msg, Chars).
+you() -> format_pid(self()).
+other(Pid) -> format_pid(Pid).
+format_pid(Pid) ->
+  Chars = io_lib:format("~w", [Pid]),
+  list_to_binary(Chars).
+
+-spec escape(Text) -> Result when
+    Text :: binary(),
+    Result :: [unicode:chardata()].
+escape(Text) ->
+  Text1 = string:replace(Text, "&", "&amp;", all),
+  Text2 = string:replace(Text1, "<", "&lt;", all),
+  Text3 = string:replace(Text2, ">", "&gt;", all),
+  Text4 = string:replace(Text3, "\"", "&quot;", all),
+  string:replace(Text4, "'", "&#x27;", all).
