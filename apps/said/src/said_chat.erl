@@ -12,7 +12,7 @@
 
 init(Req, State) ->
   {cowboy_websocket, Req, State, #{
-     idle_timeout => 120000}}.
+     idle_timeout => infinity}}.
 
 websocket_init(State) ->
   said_srv:enter(),
