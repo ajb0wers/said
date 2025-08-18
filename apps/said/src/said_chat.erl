@@ -12,7 +12,7 @@
 
 init(Req, State) ->
   {cowboy_websocket, Req, State, #{
-     idle_timeout => 900000}}.
+     idle_timeout => 120000}}.
 
 websocket_init(State) ->
   said_srv:enter(),
@@ -22,7 +22,7 @@ websocket_handle({text, Msg0}, State) ->
   #{<<"message">> := Msg} = json:decode(Msg0),
   said_srv:chat(escape(Msg)),
 	{chat(text, Msg), State};
-websocket_handle(_Data, State) ->
+websocket_handle(Frame, State) ->
 	{[], State}.
 
 websocket_info({timeout, _Ref, Msg}, State) ->
@@ -31,7 +31,7 @@ websocket_info({text, Msg}, State) ->
 	{chat(text, Msg), State};
 websocket_info({text, From, Msg}, State) ->
 	{chat(text, From, Msg), State};
-websocket_info(_Info, State) ->
+websocket_info(Info, State) ->
 	{[], State}.
 
 terminate(Reason, _PartialReq, _State) ->
