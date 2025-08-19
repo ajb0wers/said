@@ -9,7 +9,7 @@
 		rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
 	/> 
-	<title>Said | Chat</title>
+	<title>Said</title>
 </head>
 <body>
 <main class="container">
@@ -19,7 +19,10 @@
   </div>
   <form id="form" autocomplete="off" ws-send
 	      hx-on::ws-after-send="this.reset()">
-    <input name="message">
+		<fieldset role="group">
+			<input name="message" placeholder="Type a message">
+			<input type="submit" value="Send">
+		</fieldset>
   </form>
 </div>
 </main>
