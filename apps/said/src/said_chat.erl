@@ -36,12 +36,10 @@ websocket_handle(_Frame, State) ->
 websocket_info({timeout, _Ref, Msg}, State) ->
 	{toast(text, Msg), State};
 websocket_info({text, Msg}, State) ->
-  ?LOG_INFO(#{what=>websocket_info, info=>Msg}),
 	{chat(text, Msg), State};
 websocket_info({text, From, Msg}, State) ->
 	{chat(text, From, Msg), State};
-websocket_info(Info, State) ->
-  ?LOG_INFO(#{what=>info, info=>Info}),
+websocket_info(_Info, State) ->
 	{[], State}.
 
 terminate(Reason, _PartialReq, _State) ->
