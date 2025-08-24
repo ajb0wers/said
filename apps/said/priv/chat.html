@@ -13,9 +13,10 @@
 </head>
 <body>
 <main class="container">
-<div hx-ext="ws" ws-connect="/chat">
+<div hx-ext="ws" ws-connect="/chat"
+     hx-on:htmx:oob-after-swap="document.getElementById('form').scrollIntoView(false)">
 	<div id="notifications"></div>
-  <div id="chat">
+  <div id="chat" >
   </div>
   <form id="form" autocomplete="off" ws-send
 	      hx-on::ws-after-send="this.reset()">
@@ -26,9 +27,16 @@
   </form>
 </div>
 </main>
-<script src="https://unpkg.com/htmx.org@1.9.12"
+
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2"
+        crossorigin="anonymous"></script>
+
+<!--<script src="https://unpkg.com/htmx.org@1.9.12"
         integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
 				crossorigin="anonymous"></script>
 <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
+-->
 </body>
 </html>
