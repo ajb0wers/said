@@ -92,7 +92,7 @@ special_order() ->
 
 special_order_timer(_, []) -> ok;
 special_order_timer(Pid, Lines) ->
-  Time = rand:uniform(1375),
+  Time = rand:uniform(1979),
   Args = [Pid, Lines],
   {ok, _} = timer:apply_after(Time, ?MODULE, special_order, Args).
 

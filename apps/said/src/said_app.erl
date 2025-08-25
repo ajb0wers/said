@@ -19,7 +19,7 @@ start(_StartType, _StartArgs) ->
 				]}
     ]),
    {ok, _} = cowboy:start_clear(said_http_listener,
-       [{port, 8080}],
+       [{port, 10000}],
        #{env => #{dispatch => Dispatch}
 	 		}
    ),

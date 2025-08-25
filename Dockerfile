@@ -26,6 +26,6 @@ RUN apk add --no-cache openssl && \
 COPY --from=0 /data/_build/prod/rel/said /said
 
 # Expose relevant ports
-EXPOSE 8080
+EXPOSE 10000
 
 CMD ["/said/bin/said", "foreground"]
