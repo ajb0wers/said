@@ -1,0 +1,29 @@
+{
+  "Env": {
+    "HOME": "/",
+    "ROOTDIR": "/usr/local/lib/erlang",
+    "BINDIR": "/usr/local/lib/erlang/erts-15.2.7.1/bin",
+    "EMU": "beam",
+    "PROGNAME": "said",
+    "RELEASE_SYS_CONFIG": "/_build/dev/rel/said/releases/0.1.0/sys",
+    "RELEASE_ROOT": "/_build/prod/rel/said",
+    "LC_ALL": "C.UTF-8",
+    "LANG": "en_US.UTF-8"
+  },
+  "BaseVolumeSz": "200m",
+  "Dirs": ["_build", "config"],
+  "MapDirs": {
+    "/usr/lib/locale/C.utf8/*": "/usr/lib/locale/C.utf8"
+ },
+ "Args": [
+  "/_build/prod/rel/said/erts-15.2.7.1/bin/erlexec", "-noshell",
+	"-s", "said", "start_cli",
+	"-mode", "embedded",
+	"-setcookie", "I5OQ66G32JL7IHZHTNOATBVLYFMKG2HDPB2Z3KD3EZ5JM52Y52EA====",
+	"-sname", "said",
+	"-config", "/_build/prod/rel/said/releases/0.1.0/sys",
+	"-boot", "/_build/prod/rel/said/releases/0.1.0/start",
+	"-boot_var", "RELEASE_LIB", "/_build/prod/rel/said/lib",
+	"-args_file", "/_build/prod/rel/said/releases/0.1.0/vm.args",
+	"-extra", "--no-halt"]
+}
