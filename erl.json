@@ -16,7 +16,9 @@
     "/usr/lib/locale/C.utf8/*": "/usr/lib/locale/C.utf8"
  },
  "Args": [
-  "/_build/prod/rel/said/erts-15.2.7.1/bin/erlexec", "-noshell",
+  "/_build/prod/rel/said/erts-15.2.7.1/bin/erlexec",
+	"-noshell",
+	"-start_empd", "false",
 	"-s", "said", "start_cli",
 	"-mode", "embedded",
 	"-setcookie", "I5OQ66G32JL7IHZHTNOATBVLYFMKG2HDPB2Z3KD3EZ5JM52Y52EA====",
