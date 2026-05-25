@@ -1,5 +1,5 @@
 # Build stage 0
-FROM erlang:27-alpine
+FROM erlang:29-alpine
 
 #Set working directory
 RUN mkdir /data
