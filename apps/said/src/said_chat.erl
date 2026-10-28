@@ -46,21 +46,17 @@ terminate(Reason, _PartialReq, _State) ->
   ?LOG_INFO(#{what=>terminate, reason=>Reason}),
   said_srv:leave().
 
-
 chat(text, Msg) -> 
-	[{text, [<<"""
-    <div id="chat" hx-swap-oob="beforeend"><p><strong>
-    """>>, escape(you()), ~"</strong> ", Msg, ~"</p></div>"]}].
+	{ok, Body} = message_dtl:render([{you, you()}, {msg, Msg}]),
+	[{text, Body}].
 
 chat(text, From, Msg) -> 
-	[{text, [<<"""
-    <div id="chat" hx-swap-oob="beforeend"><p>
-    """>>, escape(other(From)), ~" ", Msg, ~"</p></div>"]}].
+	{ok, Body} = message_dtl:render([{from, From}, {msg, Msg}]),
+	[{text, Body}].
 
 toast(text, Msg) -> 
-	[{text, [<<"""
-    <div id="notifications">
-    """>>, Msg, ~"</div>"]}].
+	{ok, Body} = toast_dtl:render([{msg, Msg}]),
+	[{text, Body}].
 
 you() -> format_pid(self()).
 other(Pid) -> format_pid(Pid).

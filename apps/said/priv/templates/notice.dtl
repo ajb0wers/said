@@ -1,0 +1,4 @@
+<div id="chat" hx-swap-oob="beforeend">
+<p>{{from}} {{Msg}}</p>
+</div>
+
