@@ -1,5 +1,5 @@
 # Build stage 0
-FROM erlang:29-alpine
+FROM erlang:29
 
 #Set working directory
 RUN mkdir /data
@@ -15,12 +15,7 @@ COPY config config/
 #Build the release
 RUN rebar3 as prod release
 
-FROM alpine
-
-RUN apk add --no-cache openssl && \
-    apk add --no-cache ncurses-libs && \
-    apk add --no-cache libstdc++ && \
-    apk add --no-cache libgcc
+FROM erlang:29-slim
 
 # Install the released application
 COPY --from=0 /data/_build/prod/rel/said /said
