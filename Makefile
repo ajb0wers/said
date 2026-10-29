@@ -4,7 +4,7 @@ release:
 	rebar3 compile
 	rebar3 release
 
-run: release
+run:
 	./_build/default/rel/said/bin/said foreground
 
 podman:
