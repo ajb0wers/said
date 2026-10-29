@@ -51,7 +51,7 @@ chat(text, Msg) ->
 	[{text, Body}].
 
 chat(text, From, Msg) -> 
-	{ok, Body} = message_dtl:render([{from, From}, {msg, Msg}]),
+	{ok, Body} = notice_dtl:render([{from, other(From)}, {msg, Msg}]),
 	[{text, Body}].
 
 toast(text, Msg) -> 
