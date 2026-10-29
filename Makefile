@@ -13,5 +13,6 @@ podman:
 
 clean:
 	rebar3 clean
+	rm -rf ./_build
 
 .PHONY: all clean release run podman
