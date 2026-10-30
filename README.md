@@ -16,7 +16,7 @@ rebar3 release
 ./_build/default/rel/said/bin/said foreground
 
 # Open web page to chat
-xdg-open http://localhost:10000
+xdg-open http://127.0.0.1:10000
 
 # Build & run container using podman, docker, colima etc.
 podman build --tag ajb0wers/said .
