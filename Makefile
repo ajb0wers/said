@@ -4,8 +4,8 @@ release:
 	rebar3 compile
 	rebar3 release
 
-run:
-	./_build/default/rel/said/bin/said foreground
+console:
+	./_build/default/rel/said/bin/said console
 
 podman:
 	podman build --tag ajb0wers/said .
