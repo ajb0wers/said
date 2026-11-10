@@ -4,7 +4,7 @@ release:
 	rebar3 compile
 	rebar3 release
 
-console:
+console: release
 	./_build/default/rel/said/bin/said console
 
 podman:
@@ -13,6 +13,6 @@ podman:
 
 clean:
 	rebar3 clean
-	rm -rf ./_build
+	rm -Rf ./_build
 
 .PHONY: all clean release run podman
