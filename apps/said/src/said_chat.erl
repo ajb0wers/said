@@ -27,7 +27,8 @@ websocket_handle({text, Msg0}, State) ->
       special_order(),
       {[ping], State, hibernate};
     _ ->
-      said_srv:chat(escape(Msg)),
+      %% said_srv:chat(escape(Msg)),
+      said_srv:chat(Msg),
       {chat(text, Msg), State}
   end;
 websocket_handle(_Frame, State) ->
@@ -59,20 +60,22 @@ toast(text, Msg) ->
 	[{text, Body}].
 
 you() -> format_pid(self()).
+
 other(Pid) -> format_pid(Pid).
+
 format_pid(Pid) ->
   Chars = io_lib:format("~w", [Pid]),
   list_to_binary(Chars).
 
--spec escape(Text) -> Result when
-    Text :: binary(),
-    Result :: [unicode:chardata()].
-escape(Text) ->
-  Text1 = string:replace(Text, "&", "&amp;", all),
-  Text2 = string:replace(Text1, "<", "&lt;", all),
-  Text3 = string:replace(Text2, ">", "&gt;", all),
-  Text4 = string:replace(Text3, "\"", "&quot;", all),
-  string:replace(Text4, "'", "&#x27;", all).
+% -spec escape(Text) -> Result when
+%     Text :: binary(),
+%     Result :: [unicode:chardata()].
+% escape(Text) ->
+%   Text1 = string:replace(Text, "&", "&amp;", all),
+%   Text2 = string:replace(Text1, "<", "&lt;", all),
+%   Text3 = string:replace(Text2, ">", "&gt;", all),
+%   Text4 = string:replace(Text3, "\"", "&quot;", all),
+%   string:replace(Text4, "'", "&#x27;", all).
 
 
 special_order() ->
@@ -86,13 +89,12 @@ special_order() ->
     <<"ALL OTHER CONSIDERATIONS SECONDARY.">>,
     <<"CREW EXPENDABLE.">>]).
 
+special_order(Pid, [L|Lines]) -> 
+  Pid ! {text, L},
+  special_order_timer(Pid, Lines).
+
 special_order_timer(_, []) -> ok;
 special_order_timer(Pid, Lines) ->
   Time = rand:uniform(1979),
   Args = [Pid, Lines],
   {ok, _} = timer:apply_after(Time, ?MODULE, special_order, Args).
-
-special_order(Pid, [L|Lines]) -> 
-  Pid ! {text, L},
-  special_order_timer(Pid, Lines).
-
