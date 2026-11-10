@@ -18,7 +18,7 @@ rebar3 release
 # Open web page to chat
 xdg-open http://127.0.0.1:10000
 
-# Build & run container using podman, docker, colima etc.
+# Build & run container using podman
 podman build --tag ajb0wers/said .
 podman run -p 10000:10000 --rm --name said ajb0wers/said
 
