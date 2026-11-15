@@ -27,7 +27,6 @@ websocket_handle({text, Msg0}, State) ->
       special_order(),
       {[ping], State, hibernate};
     _ ->
-      %% said_srv:chat(escape(Msg)),
       said_srv:chat(Msg),
       {chat(text, Msg), State}
   end;
